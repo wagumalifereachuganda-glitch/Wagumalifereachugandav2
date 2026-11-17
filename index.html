@@ -434,10 +434,15 @@
     /* ===== CAUSES ===== */
     #causes { background: var(--white); }
     .causes-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
       gap: 28px;
+      overflow-x: auto;
+      padding: 12px 2px 16px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
+    .causes-grid::-webkit-scrollbar { display:none; }
     .cause-card {
       background: var(--white);
       border-radius: var(--radius);
@@ -446,6 +451,8 @@
       border: 1px solid var(--border);
       transition: transform var(--transition), box-shadow var(--transition);
       display: flex; flex-direction: column;
+      flex: 0 0 calc((100% - 56px) / 3);
+      scroll-snap-align: start;
     }
     .cause-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
     .cause-card-img {
@@ -468,8 +475,8 @@
     .cause-progress-bar { height:5px; background: #e8f5e9; border-radius:3px; overflow:hidden; }
     .cause-progress-fill { height:100%; background: linear-gradient(90deg, var(--green), var(--green-light)); border-radius:3px; }
     .cause-progress-label { display:flex; justify-content:space-between; font-size:0.76rem; color:var(--text-muted); margin-top:6px; }
-    @media(max-width:900px){ .causes-grid{grid-template-columns:repeat(2,1fr);} }
-    @media(max-width:580px){ .causes-grid{grid-template-columns:1fr;} }
+    @media(max-width:900px){ .cause-card{flex-basis:calc((100% - 28px) / 2);} }
+    @media(max-width:580px){ .cause-card{flex-basis:88%;} }
 
     /* ===== IMPACT / CTA BAND ===== */
     .impact-band {
@@ -852,7 +859,7 @@
       <div class="divider"></div>
       <p class="section-subtitle" style="margin-top:16px;">Discover the key initiatives driving real, lasting change across Ugandan communities.</p>
     </div>
-    <div class="causes-grid">
+    <div class="causes-grid" id="causesSlider" aria-label="Our core causes">
 
       <div class="cause-card" data-reveal>
         <div class="cause-card-img">
@@ -944,6 +951,10 @@
         </div>
       </div>
 
+    </div>
+    <div class="blog-slider-controls" aria-label="Causes slider controls">
+      <button type="button" id="causesSliderPrev" aria-label="Previous causes"><i class="fa-solid fa-arrow-left"></i></button>
+      <button type="button" id="causesSliderNext" aria-label="Next causes"><i class="fa-solid fa-arrow-right"></i></button>
     </div>
   </div>
 </section>
@@ -1084,8 +1095,8 @@ WLRU's charity visit to Future Faces Uganda Children's Home brought support, enc
         <!-- Link to external blog -->
         <a href="https://wagumalifereachug.blogspot.com/2026/06/wlru-charity-outreach-brings-hope-to.html" target="_blank" rel="noopener" class="btn-visit-blog">
           Visit Our Blog <i class="fa-solid fa-arrow-right"></i>
-        </a>   <a href="" target="_blank" rel="noopener" class="btn-visit-blog">
-          Download Kaliti Report <i class="fa-solid fa-arrow-right"></i>
+        </a>   <a href="KALITI%20REPORT.docx" download="KALITI REPORT.docx" class="btn-visit-blog">
+          Download Kalita Report <i class="fa-solid fa-arrow-right"></i>
         </a>
       </div>
       <div class="blog-redirect-image">
@@ -1352,6 +1363,7 @@ WLRU's charity visit to Future Faces Uganda Children's Home brought support, enc
   }
   setupCardSlider('blogSlider', 'blogSliderPrev', 'blogSliderNext');
   setupCardSlider('twitterSlider', 'twitterSliderPrev', 'twitterSliderNext');
+  setupCardSlider('causesSlider', 'causesSliderPrev', 'causesSliderNext');
 
   /* ── HERO SLIDER ── */
   const slides = document.querySelectorAll('.hero-slide');
